@@ -1,0 +1,46 @@
+function roundedRect(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
+function drawArena(){
+ const g=ctx;g.clearRect(0,0,W,H);g.fillStyle='#629266';g.fillRect(0,0,W,H);
+ for(let y=0;y<H;y+=44)for(let x=0;x<W;x+=48){g.fillStyle=((x/48+y/44)%2?'#ffffff07':'#183f2924');g.fillRect(x+((y/44)%2)*24,y,24,22)}
+ g.fillStyle='#3b724b';g.fillRect(0,0,85,H);g.fillRect(915,0,85,H);
+ for(let i=0;i<38;i++){const x=i%2?34:966,y=(i*83+21)%H;g.fillStyle=i%3?'#285b3c':'#80a864';g.beginPath();g.arc(x,y,5+(i%4)*2,0,Math.PI*2);g.fill();g.globalAlpha=.5;g.fillStyle='#b5c77d';g.beginPath();g.arc(x-2,y-2,2,0,Math.PI*2);g.fill();g.globalAlpha=1}
+ g.fillStyle='#c5b276';g.fillRect(88,245,824,60);g.fillStyle='#4a9caa';g.fillRect(88,251,824,48);g.fillStyle='#65b4bb';g.fillRect(88,251,824,5);
+ const t=game.elapsed;for(let i=0;i<14;i++){const x=(i*89+t*29)%830+90,y=261+(i*19)%28;g.strokeStyle='#c6eef055';g.lineWidth=2;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+10,y-2,x+19,y);g.stroke()}
+ g.fillStyle='#725641';g.fillRect(414,239,172,73);g.fillStyle='#a68159';g.fillRect(420,243,160,63);
+ for(let x=426;x<580;x+=25){g.fillStyle='#bb9366';g.fillRect(x,244,4,60);g.strokeStyle='#806244';g.lineWidth=1;g.beginPath();g.moveTo(x,245);g.lineTo(x+2,303);g.stroke()}
+ g.fillStyle='#5e4939';g.fillRect(412,239,176,7);g.fillRect(412,305,176,7);
+ g.fillStyle='#dfca9580';g.fillRect(382,22,236,215);g.fillRect(382,313,236,215);g.fillStyle='#ffffff0a';g.fillRect(382,mid,236,275);
+ for(let y=28;y<235;y+=32){g.fillStyle='#d5c38b80';g.beginPath();g.ellipse(394+(y%4)*4,y,5,3,-.3,0,Math.PI*2);g.fill();g.beginPath();g.ellipse(600-(y%4)*4,y+12,5,3,.3,0,Math.PI*2);g.fill()}
+ for(let y=320;y<530;y+=32){g.fillStyle='#d5c38b80';g.beginPath();g.ellipse(394+(y%4)*4,y,5,3,-.3,0,Math.PI*2);g.fill();g.beginPath();g.ellipse(600-(y%4)*4,y+12,5,3,.3,0,Math.PI*2);g.fill()}
+ for(let i=0;i<16;i++){const x=112+(i*197)%780,y=35+(i*137)%480;if(y>230&&y<315&&x>385&&x<615)continue;g.globalAlpha=.6;g.fillStyle=i%2?'#e7d079':'#e5e9c2';g.beginPath();g.arc(x,y,2,0,Math.PI*2);g.fill();g.globalAlpha=1}
+ drawTower(500,70,'enemy',enemyTower.hp/enemyTower.maxHp);drawTower(500,480,'player',playerTower.hp/playerTower.maxHp);
+}
+function drawTower(x,y,side,hp){const g=ctx,enemy=side==='enemy',main=enemy?'#d85e5a':'#467ce0',dark=enemy?'#9e4248':'#3157a9',edge=enemy?'#6c3437':'#243d72';
+ g.save();g.translate(x,y);g.fillStyle='#16232455';g.beginPath();g.ellipse(0,26,47,15,0,0,Math.PI*2);g.fill();g.fillStyle='#b7a283';roundedRect(g,-37,-20,74,49,9);g.fill();g.fillStyle=dark;roundedRect(g,-32,-17,64,43,7);g.fill();g.fillStyle=main;roundedRect(g,-28,-14,56,35,6);g.fill();
+ g.fillStyle=edge;g.fillRect(-32,-18,64,9);for(let dx=-27;dx<=23;dx+=17){g.fillStyle=enemy?'#ee8a72':'#78aaff';roundedRect(g,dx,-23,10,15,3);g.fill()}
+ g.fillStyle=enemy?'#ffbf6b':'#ffe276';g.beginPath();g.moveTo(0,-54);g.lineTo(10,-39);g.lineTo(7,-24);g.lineTo(-7,-24);g.lineTo(-10,-39);g.closePath();g.fill();g.fillStyle='#fff5bd';g.beginPath();g.arc(0,-39,4,0,Math.PI*2);g.fill();
+ g.fillStyle='#14201e';roundedRect(g,-24,34,48,7,4);g.fill();g.fillStyle=hp>.45?'#71d27c':'#f1a84e';roundedRect(g,-22,35,44*Math.max(0,hp),5,3);g.fill();g.fillStyle='#fff';g.font='800 10px Outfit, sans-serif';g.textAlign='center';g.fillText(enemy?'RIVAL':'YOUR CROWN',0,57);g.restore();
+}
+function drawUnit(u){const g=ctx;g.save();g.translate(u.x,u.y+Math.sin(u.walk)*1.5);const enemy=u.side==='enemy',accent=enemy?'#e86a65':'#568af0';
+ g.fillStyle='#17211e55';g.beginPath();g.ellipse(0,u.radius*.78,u.radius*1.25,5,0,0,Math.PI*2);g.fill();g.strokeStyle=enemy?'#ffc2a3':'#d7e3ff';g.lineWidth=2.5;g.lineCap='round';g.beginPath();g.moveTo(-5,u.radius*.25);g.lineTo(-7+Math.sin(u.walk)*3,u.radius*.72);g.moveTo(5,u.radius*.25);g.lineTo(7-Math.sin(u.walk)*3,u.radius*.72);g.stroke();
+ let body=accent,head='#f0bd8e';if(u.kind==='knight'){body=enemy?'#c45357':'#416dc6';head=enemy?'#edb08b':'#d69d79'}if(u.kind==='archers')body=enemy?'#a34f85':'#318f80';if(u.kind==='giant')body=enemy?'#994b48':'#756044';
+ g.fillStyle=u.flash>0?'#fff':body;g.beginPath();g.ellipse(0,0,u.radius*.86,u.radius*1.02,0,0,Math.PI*2);g.fill();g.strokeStyle='#ffffff80';g.lineWidth=1.5;g.stroke();g.fillStyle=head;g.beginPath();g.arc(0,-u.radius*.52,u.radius*.46,0,Math.PI*2);g.fill();
+ if(u.kind==='knight'){g.fillStyle=enemy?'#f0a04f':'#a9c8eb';g.beginPath();g.arc(0,-u.radius*.61,u.radius*.48,Math.PI,0);g.lineTo(u.radius*.45,-u.radius*.38);g.lineTo(-u.radius*.45,-u.radius*.38);g.fill();g.fillStyle='#fff7d4';g.fillRect(-3,-u.radius*.59,6,2)}
+ if(u.kind==='archers'){g.fillStyle=enemy?'#a7497b':'#267668';g.beginPath();g.arc(0,-u.radius*.55,u.radius*.52,Math.PI,Math.PI*2);g.lineTo(u.radius*.48,-u.radius*.24);g.lineTo(-u.radius*.48,-u.radius*.24);g.fill();g.strokeStyle='#f6d79a';g.lineWidth=2;g.beginPath();g.arc(u.radius*.68,0,7,-1.2,1.2);g.stroke()}
+ if(u.kind==='giant'){g.fillStyle='#887058';g.beginPath();g.arc(0,-u.radius*.55,u.radius*.58,Math.PI,Math.PI*2);g.fill();g.fillStyle='#ffde81';g.fillRect(-7,-u.radius*.57,3,3);g.fillRect(4,-u.radius*.57,3,3)}
+ g.fillStyle=accent;g.beginPath();g.arc(0,u.radius*.96,4,0,Math.PI*2);g.fill();g.fillStyle='#172324';roundedRect(g,-u.radius,-u.radius-11,u.radius*2,4,2);g.fill();g.fillStyle=u.hp/u.maxHp>.35?'#8be08b':'#ffb25f';roundedRect(g,-u.radius,-u.radius-11,u.radius*2*Math.max(0,u.hp/u.maxHp),4,2);g.fill();g.restore();
+}
+function draw(){drawArena();for(const u of game.units)drawUnit(u);const g=ctx;
+ for(const s of game.shots){g.globalAlpha=Math.max(0,s.life/.13);g.strokeStyle=s.side==='player'?'#d6eeff':'#ffd4c0';g.lineWidth=2.5;g.beginPath();g.moveTo(s.x,s.y);g.lineTo(s.x2,s.y2);g.stroke();g.globalAlpha=1}
+ for(const p of game.particles){g.globalAlpha=Math.max(0,p.life);g.fillStyle=p.color;g.beginPath();g.arc(p.x,p.y,p.size*Math.max(.2,p.life),0,Math.PI*2);g.fill()}g.globalAlpha=1;
+ if(game.selected&&!game.over){const c=cards.find(a=>a.id===game.selected);g.globalAlpha=.1;g.fillStyle=c.spell?'#f17854':'#5f91ff';g.fillRect(85,c.spell?0:mid+5,830,c.spell?mid-5:H-mid-5);g.globalAlpha=.9;g.strokeStyle=c.spell?'#ffb66c':'#d4e5ff';g.setLineDash([6,7]);g.lineWidth=2;g.beginPath();g.moveTo(90,mid);g.lineTo(910,mid);g.stroke();g.setLineDash([]);g.globalAlpha=1}
+}
+function frame(now){const dt=Math.min(.04,(now-last)/1000);last=now;update(dt);draw();requestAnimationFrame(frame)}
+const originalReset=reset;
+reset=function(){playerTower.hp=playerTower.maxHp;enemyTower.hp=enemyTower.maxHp;originalReset()};
+$('resetBtn').onclick=reset;$('againBtn').onclick=reset;
+notify('Pick a card and defend your crown!');requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
