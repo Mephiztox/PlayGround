@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>portrait preview</title>
+<style>
+  body{margin:0;background:#100b1e;font-family:sans-serif;color:#fff;padding:20px;display:flex;gap:16px;flex-wrap:wrap}
+  .card{width:260px}
+  .card svg{width:260px;height:330px;border-radius:20px;display:block}
+  h3{margin:8px 0 0;font-size:15px;font-weight:600}
+</style>
+</head>
+<body>
+<script type="module">
+import { portraitSVG } from './js/portraits.js';
+const chars = [
+  { name:'Aiko', style:{hairStyle:'twintails', hairColor:'strawberry', eyeColor:'ruby', outfitColor:'navy', outfit:'sailor', accessory:'ribbon'} },
+  { name:'Miyu', style:{hairStyle:'long', hairColor:'sakura', eyeColor:'emerald', outfitColor:'cream', outfit:'dress', accessory:'flower'} },
+  { name:'Rin', style:{hairStyle:'long', hairColor:'midnight', eyeColor:'violet', outfitColor:'charcoal', outfit:'hoodie', accessory:'clip'} },
+  { name:'Hana', style:{hairStyle:'short', hairColor:'honey', eyeColor:'amber', outfitColor:'coral', outfit:'jacket', accessory:'none'} },
+  { name:'Yuki', style:{hairStyle:'wavy', hairColor:'silver', eyeColor:'ocean', outfitColor:'plum', outfit:'kimono', accessory:'glasses'} },
+  { name:'Sora', style:{hairStyle:'ponytail', hairColor:'sky', eyeColor:'teal', outfitColor:'forest', outfit:'hoodie', accessory:'cat'} },
+];
+for (const c of chars) {
+  const d = document.createElement('div');
+  d.className = 'card';
+  d.innerHTML = portraitSVG(c, { expression:'smile' }) + `<h3>${c.name}</h3>`;
+  document.body.appendChild(d);
+}
+</script>
+</body>
+</html>

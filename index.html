@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8f5">
+  <meta name="description" content="A cozy anime-inspired relationship and daily-life roleplay game. Meet your housemates, make a home together, and take each day at your own pace.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23fff1f2'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-size='48' fill='%23ce8296'%3E%E2%9C%BF%3C/text%3E%3C/svg%3E">
+  <title>Sakura House — a cozy life together</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="Sakura House home">
+        <span class="brand-mark">✿</span><span class="brand-name">sakura<span>house</span></span>
+      </a>
+      <div class="side-label">YOUR HOME</div>
+      <nav class="main-nav">
+        <button class="nav-link active" data-view="home"><span class="nav-icon">⌂</span><span>Overview</span></button>
+        <button class="nav-link" data-view="chat"><span class="nav-icon">♡</span><span>Heart to heart</span><span class="nav-dot"></span></button>
+        <button class="nav-link" data-view="residents"><span class="nav-icon">✧</span><span>Housemates</span></button>
+        <button class="nav-link" data-view="day"><span class="nav-icon">☼</span><span>Daily rhythm</span></button>
+      </nav>
+      <div class="sidebar-residents">
+        <div class="side-label side-label-row">YOUR HOUSEMATES <button class="tiny-plus" id="add-resident" title="Invite a housemate">+</button></div>
+        <div id="resident-list" class="resident-list"></div>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="little-note"><span>☕</span><div><b>A softer kind of day</b><small>Little moments count.</small></div></div>
+        <button class="nav-link settings-link" id="settings-btn"><span class="nav-icon">⚙</span><span>Settings</span></button>
+        <div class="profile-mini"><div class="profile-avatar">Y</div><div><b>You</b><small>House manager</small></div><span class="profile-chevron">⌄</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-brand" data-view="home"><span class="brand-mark">✿</span><span class="brand-name">sakura<span>house</span></span></button>
+        <div class="breadcrumb"><span>My home</span><span class="crumb-slash">/</span><b id="crumb-title">Overview</b></div>
+        <div class="topbar-right"><div class="day-pill"><span>☼</span><span id="top-day">MON · DAY 01</span></div><button class="icon-btn" id="top-chat" title="Open messages">♡<i></i></button><button class="top-avatar">Y</button></div>
+      </header>
+      <div class="view-container" id="view-container"></div>
+      <nav class="mobile-nav" aria-label="Mobile navigation">
+        <button class="mobile-nav-btn active" data-view="home"><span>⌂</span><small>Home</small></button>
+        <button class="mobile-nav-btn" data-view="chat"><span>♡</span><small>Chat</small><i></i></button>
+        <button class="mobile-nav-btn" data-view="residents"><span>✧</span><small>Girls</small></button>
+        <button class="mobile-nav-btn" data-view="day"><span>☼</span><small>Today</small></button>
+      </nav>
+    </main>
+  </div>
+  <div id="modal-root"></div>
+  <div id="toast-root" aria-live="polite"></div>
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>
