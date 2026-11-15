@@ -5,7 +5,15 @@
 
 let UID = 0;
 
-const SKIN = { base: '#ffe3d3', shade: '#f4c3ad', line: '#d99a84' };
+export const SKIN_TONES = [
+  { id: 'porcelain', name: 'Porcelain', base: '#f7e4d7', shade: '#e9c8b7', line: '#c99583', light: '#fff4eb' },
+  { id: 'warm-ivory', name: 'Warm ivory', base: '#edc7a8', shade: '#d9a987', line: '#b67f63', light: '#f9dfc7' },
+  { id: 'golden', name: 'Golden', base: '#c98e62', shade: '#aa704a', line: '#865235', light: '#e3b184' },
+  { id: 'umber', name: 'Umber', base: '#8f5d48', shade: '#754636', line: '#5e382d', light: '#b77d60' },
+  { id: 'deep', name: 'Deep', base: '#573b35', shade: '#432d29', line: '#342321', light: '#785349' },
+];
+
+const skinById = (id) => SKIN_TONES.find((tone) => tone.id === id) || SKIN_TONES[0];
 
 export const HAIR_COLORS = [
   { id: 'strawberry', name: 'Strawberry', base: '#f0a08a', dark: '#cf7460', light: '#ffd2bd' },
@@ -289,35 +297,30 @@ function accessory(kind, hair, eye, u) {
 }
 
 /* ---- eyes / face ---- */
-function eyes(expr, eyeId, u, dir = 1) {
+function eyes(expr, eyeId, u) {
   const e = eyeById(eyeId);
-  const closed = expr === 'wink' || expr === 'sleepy';
-  const lash = '#3a2438';
-  const lid = (cx) =>
-    `<path d="M${cx - 21} 154 C${cx - 16} 139 ${cx + 1} 135 ${cx + 14} 142" stroke="${lash}" stroke-width="5.5" fill="none" stroke-linecap="round"/>`;
-  const lower = (cx) => `<path d="M${cx - 15} 172 C${cx - 7} 178 ${cx + 4} 178 ${cx + 13} 170" stroke="${lash}" stroke-width="1.8" opacity=".35" fill="none" stroke-linecap="round"/>`;
-  const openEye = (cx, flip) => `
+  const lash = '#493638';
+  const lower = (cx) => `<path d="M${cx - 13} 161 C${cx - 7} 168 ${cx + 6} 168 ${cx + 13} 160" stroke="#9b7167" stroke-width="1.2" opacity=".42" fill="none" stroke-linecap="round"/>`;
+  const openEye = (cx, flip = false) => `
     <g ${flip ? `transform="translate(${cx * 2} 0) scale(-1 1)"` : ''}>
-      <path d="M${cx - 20} 158 C${cx - 20} 144 ${cx - 6} 136 ${cx + 6} 140 C${cx + 16} 143 ${cx + 17} 158 ${cx + 10} 169 C${cx + 1} 180 ${cx - 17} 173 ${cx - 20} 158 Z" fill="#fffaf8"/>
-      <circle cx="${cx - 1}" cy="158" r="14" fill="url(#iris${u})"/>
-      <circle cx="${cx - 1}" cy="158" r="13" fill="none" stroke="${e.dark}" stroke-width="2.6" opacity=".55"/>
-      <circle cx="${cx - 1}" cy="159" r="6.5" fill="#201626"/>
-      <circle cx="${cx + 4}" cy="150" r="4.6" fill="#fff" opacity=".96"/>
-      <circle cx="${cx - 8}" cy="166" r="2.5" fill="#fff" opacity=".55"/>
-      <path d="M${cx - 18} 168 C${cx - 10} 175 ${cx + 2} 176 ${cx + 11} 168" stroke="${e.light}" stroke-width="2.4" opacity=".85" fill="none"/>
-      ${lid(cx)}
-      <path d="M${cx - 22} 151 C${cx - 29} 148 ${cx - 28} 142 ${cx - 22} 141 C${cx - 25} 146 ${cx - 23} 149 ${cx - 18} 152 Z" fill="${lash}" opacity=".85"/>
+      <path d="M${cx - 15} 155 C${cx - 10} 146 ${cx + 5} 144 ${cx + 15} 153 C${cx + 10} 163 ${cx - 5} 167 ${cx - 15} 155 Z" fill="#fffaf6"/>
+      <path d="M${cx - 14} 155 C${cx - 8} 147 ${cx + 4} 145 ${cx + 14} 153" stroke="${lash}" stroke-width="2.7" fill="none" stroke-linecap="round"/>
+      <ellipse cx="${cx}" cy="155" rx="8.5" ry="10" fill="url(#iris${u})"/>
+      <ellipse cx="${cx}" cy="157" rx="3.8" ry="5.1" fill="#261d20"/>
+      <circle cx="${cx + 2.8}" cy="150" r="2.5" fill="#fff" opacity=".92"/>
+      <circle cx="${cx - 3.2}" cy="159" r="1.3" fill="#fff" opacity=".55"/>
+      <path d="M${cx - 13} 157 C${cx - 7} 165 ${cx + 5} 166 ${cx + 13} 157" stroke="${e.light}" stroke-width="1.3" opacity=".72" fill="none"/>
+      <path d="M${cx - 14} 154 C${cx - 20} 151 ${cx - 20} 147 ${cx - 15} 147" stroke="${lash}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
       ${lower(cx)}
     </g>`;
   const shutEye = (cx) => `
     <g>
-      <path d="M${cx - 18} 160 C${cx - 8} 152 ${cx + 6} 152 ${cx + 16} 160" stroke="${lash}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-      <path d="M${cx + 16} 160 l7 4 M${cx + 16} 160 l7 -4" stroke="${lash}" stroke-width="3" stroke-linecap="round"/>
+      <path d="M${cx - 14} 157 C${cx - 7} 151 ${cx + 6} 151 ${cx + 14} 157" stroke="${lash}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M${cx + 13} 157 l4 2" stroke="${lash}" stroke-width="1.5" stroke-linecap="round"/>
     </g>`;
-  if (closed) {
-    return `${shutEye(124)}${expr === 'wink' ? openEye(176, true) : shutEye(176)}`;
-  }
-  return `${openEye(124, false)}${openEye(176, true)}`;
+  if (expr === 'wink') return `${shutEye(124)}${openEye(176, true)}`;
+  if (expr === 'sleepy') return `${shutEye(124)}${shutEye(176)}`;
+  return `${openEye(124)}${openEye(176, true)}`;
 }
 
 function mouth(expr) {
@@ -341,6 +344,7 @@ export function portraitSVG(char, opts = {}) {
   const u = ++UID;
   const style = (char.style || {});
   const hair = hairById(style.hairColor);
+  const skin = skinById(style.skinTone);
   const eye = eyeById(style.eyeColor);
   const fit = outfitById(style.outfitColor);
   const hairStyle = style.hairStyle || 'long';
@@ -376,8 +380,9 @@ export function portraitSVG(char, opts = {}) {
       <stop offset="100%" stop-color="${hair.dark}"/>
     </linearGradient>
     <linearGradient id="skin${u}" x1="0" y1="0" x2="0.2" y2="1">
-      <stop offset="0%" stop-color="#fff0e5"/>
-      <stop offset="100%" stop-color="${SKIN.base}"/>
+      <stop offset="0%" stop-color="${skin.light}"/>
+      <stop offset="52%" stop-color="${skin.base}"/>
+      <stop offset="100%" stop-color="${skin.shade}"/>
     </linearGradient>
     <linearGradient id="fit${u}" x1="0" y1="0" x2="0.5" y2="1">
       <stop offset="0%" stop-color="${fit.light}"/>
@@ -414,16 +419,16 @@ export function portraitSVG(char, opts = {}) {
   ${hairBack(hairStyle, hair, u)}
   ${outfit(outfitStyle, fit, u)}
 
-  <rect x="132" y="198" width="36" height="60" rx="15" fill="${SKIN.shade}"/>
-  <path d="M132 208 C140 224 160 224 168 208 L168 218 C158 230 142 230 132 218 Z" fill="${SKIN.line}" opacity=".28"/>
+  <rect x="132" y="198" width="36" height="60" rx="15" fill="${skin.shade}"/>
+  <path d="M132 208 C140 224 160 224 168 208 L168 218 C158 230 142 230 132 218 Z" fill="${skin.line}" opacity=".28"/>
 
   <path d="M150 68 C112 68 93 97 93 136 C93 177 116 214 150 225 C184 214 207 177 207 136 C207 97 188 68 150 68 Z" fill="url(#skin${u})"/>
-  <ellipse cx="94" cy="158" rx="9" ry="14" fill="${SKIN.base}"/>
-  <ellipse cx="206" cy="158" rx="9" ry="14" fill="${SKIN.base}"/>
-  <ellipse cx="94" cy="159" rx="4" ry="8" fill="${SKIN.shade}" opacity=".6"/>
-  <ellipse cx="206" cy="159" rx="4" ry="8" fill="${SKIN.shade}" opacity=".6"/>
+  <ellipse cx="94" cy="158" rx="9" ry="14" fill="${skin.base}"/>
+  <ellipse cx="206" cy="158" rx="9" ry="14" fill="${skin.base}"/>
+  <ellipse cx="94" cy="159" rx="4" ry="8" fill="${skin.shade}" opacity=".6"/>
+  <ellipse cx="206" cy="159" rx="4" ry="8" fill="${skin.shade}" opacity=".6"/>
   <g clip-path="url(#faceClip${u})">
-    <path d="M93 140 C120 150 180 150 207 140 L207 90 L93 90 Z" fill="${SKIN.line}" opacity=".14"/>
+    <path d="M93 140 C120 150 180 150 207 140 L207 90 L93 90 Z" fill="${skin.line}" opacity=".14"/>
     <ellipse cx="108" cy="188" rx="17" ry="8" fill="#ff8fa8" opacity="${blushStrong ? 0.5 : 0.28}"/>
     <ellipse cx="192" cy="188" rx="17" ry="8" fill="#ff8fa8" opacity="${blushStrong ? 0.5 : 0.28}"/>
     <path d="M102 186 l8 -5 M108 189 l8 -5 M110 193 l8 -5" stroke="#ff7d99" stroke-width="1.4" opacity="${blushStrong ? 0.65 : 0.35}" stroke-linecap="round"/>
@@ -434,7 +439,7 @@ export function portraitSVG(char, opts = {}) {
   <path d="M162 132 C170 127 184 127 193 133" stroke="${hair.dark}" stroke-width="3.6" fill="none" stroke-linecap="round" opacity=".9"/>
 
   ${eyes(expression, style.eyeColor, u)}
-  <path d="M149 176 C146 181 147 184 151 185" stroke="${SKIN.line}" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"/>
+  <path d="M149 176 C146 181 147 184 151 185" stroke="${skin.line}" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"/>
   ${mouth(expression)}
   ${bangs(hairStyle, hair)}
   ${sideLocks(hairStyle, hair)}
